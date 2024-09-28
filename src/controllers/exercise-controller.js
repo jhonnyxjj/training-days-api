@@ -2,14 +2,14 @@ import * as exerciseService from '../services/exercise-service.js';
 
 
 export const initialize = (app) => {
-    app.get('/exercises', getExercise);
-    app.post('/exercises', createExercise);
-    app.put('/exercises/:id', updateExercise);
+    app.get('/exercises', getExercises);
+    app.post('/exercises', createExercises);
+    app.patch('/exercises/:id', updateExercise);
     app.delete('/exercises/:id', deleteExercise);
 }
 
 
-export const getExercise = (req, res) => {
+export const getExercises = (req, res) => {
     try {
         const exercises = exerciseService.listAllExercises();
         res.status(200).json(exercises);
@@ -18,7 +18,7 @@ export const getExercise = (req, res) => {
     }
 }
 
-export const createExercise = (req, res) => {
+export const createExercises = (req, res) => {
     try {
         const exercise = req.body;
         const newExercise = exerciseService.registerExercise(exercise);
@@ -30,7 +30,7 @@ export const createExercise = (req, res) => {
 
 export const updateExercise = (req, res) => {
     try {
-        const exerciseId  = req.params.id;
+        const exerciseId = req.params.id;
         const updateExercise = req.body;
         const exercise = exerciseService.updateExercise(exerciseId, updateExercise);
         res.status(200).json(exercise);

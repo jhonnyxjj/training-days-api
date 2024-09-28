@@ -13,5 +13,5 @@ controllers.forEach(c => {
 
 
 app.listen(port, () => {
-    console.log("Estamos rodando na port 3000");
+    console.log(`Estamos rodando na port ${port}`);
 });

@@ -6,13 +6,20 @@ export const listAllExercises = () => {
 
 export const registerExercise = (exercise) => {
     if (!exercise.name) { throw new Error("O nome do exercício é obrigatório."); }
-    exerciseRepository.create(exercise);
-    const newExercise = exerciseRepository.getAll();
+
+    const existExercise = exerciseRepository.getAll().some(ex => ex.name === exercise.name);
+    if (existExercise) { throw new Error("Já existe um exercício com esse nome."); }
+
+    const newExercise = exerciseRepository.create(exercise);
     return newExercise;
 }
 
 export const updateExercise = (exerciseId, updatedExercise) => {
     if (!updatedExercise.name) { throw new Error("O nome do exercício é obrigatório."); }
+    if (isNaN(exerciseId)) { throw new Error("O ID do exercício é inválido, ou não existe.") }
+
+    const existExercise = exerciseRepository.getAll().some(ex => ex.name === updatedExercise.name);
+    if (existExercise) { throw new Error("Já existe um exercício com esse nome."); }
 
     const exercise = exerciseRepository.update(exerciseId, updatedExercise);
     return exercise;
@@ -20,7 +27,7 @@ export const updateExercise = (exerciseId, updatedExercise) => {
 }
 
 export const removeExercise = (exerciseId) => {
-    if (!exerciseId) { throw new Error("O ID do exercício é obrigatório."); }
+    if (isNaN(exerciseId)) { throw new Error("O ID do exercício é inválido, ou não existe."); }
 
     const exercise = exerciseRepository.remove(exerciseId);
     return exercise;
