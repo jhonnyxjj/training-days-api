@@ -1,1 +1,6 @@
+# Ignorar a pasta node_modules
 node_modules/
+
+# Ignorar o arquivo test.js dentro de src/controllers
+src/controllers/test.js
+
