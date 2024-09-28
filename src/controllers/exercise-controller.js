@@ -48,6 +48,3 @@ export const deleteExercise = (req, res) => {
         res.status(404).send({ error: e.message });
     }
 }
-
-
-// TODO: RESOLVER O PROBLEMA DO REMOVER, NAO ESTA REMOVENDO
