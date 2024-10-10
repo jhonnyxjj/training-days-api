@@ -63,6 +63,6 @@ const errorHandler = (err, req, res, next) => {
 
 ### Para testar
 
-- Inicie sua aplicação e acesse a rota que gera um erro (/error). Você deve ver a resposta formatada com o nome e a
+- Inicie sua aplicação e acesse a rota da sua aplicação.Tente forçar errors na aplicação, você deve ver a resposta formatada com o nome e a
   mensagem do erro.
 - Para outras rotas, o middleware de erro deve capturar erros não tratados e retornar uma mensagem genérica de erro 500.
