@@ -1,57 +1,68 @@
-# Exercício API - Training Days
+# Training Days API
 
-## Objetivo
+## Feature: Middleware de Erro
 
-API do "Training Days", app utilizado para o registro de diferentes treinos de academia.
+### Descrição
 
-## Entidades
+Esta feature adiciona um middleware de erro à API, permitindo um tratamento de erros mais consistente e amigável. O
+middleware captura erros gerados durante o processamento das requisições e retorna respostas formatadas ao cliente,
+garantindo que o usuário receba informações úteis sobre o que ocorreu.
 
-### Exercício (exercise)
+### Estrutura de Erros
 
-Um exercício é um conjunto de movimentos utilizados para fortalecer a musculatura, e possui a seguinte estrutura:
+1. **`errors`**:
+    - Contém classes de erro personalizadas que podem ser utilizadas em toda a aplicação, facilitando o gerenciamento de
+      diferentes tipos de erros.
 
-```json
-{
-  "id": 0, // Identificador único do exercício, iniciando em 0 e nunca se repetindo
-  "name": "Nome do exercício",
-  "description": "Descrição do exercício"
-}
-```
+### Classes de Erro Personalizadas
 
-## Rotas
+#### `ServerError`
 
-Desenvolver as seguintes rotas na aplicação:
+A classe `ServerError` estende a classe `Error` nativa do JavaScript e é utilizada para representar erros do servidor de
+forma consistente.
 
-### GET /exercises
-
-Traz todos os exercícios cadastrados na plataforma.
-
-**Exemplo de resposta**
-
-```json
-{
-  "exercises": [
-    {
-      "id": 0,
-      "name": "Teste",
-      "description": "Exercício de testes"
+```javascript
+class ServerError extends Error {
+    constructor(name, statusCode, message) {
+        super(message);
+        this.name = name; // Nome do erro
+        this.statusCode = statusCode; // Código de status HTTP
     }
-  ]
 }
 ```
 
-### POST /exercises
+#### Outras Classes de Erros
 
-Cria um novo exercício, lembrando que o campo "name" é obrigatório, o campo "description" é opcional e o campo "id" deve ser criado automaticamente pelo servidor, sendo descartado caso recebido na request.
-Deve retornar 400 caso algum parâmetro esteja inválido.
+- `InvalidParameterError:` Utilizada quando um parâmetro de requisição não é válido.
+- `ConflictError:` Utilizada em situações de conflito, como tentativas de criação de um recurso que já existe.
 
-### PATCH /exercises/:id
+### Middleware de Erro: `error-middleware.js`
 
-Permite alterar os campos de um determinado exercício identificado pelo parâmetro "id";
-Deve retornar 404 caso o exercício não seja encontrado.
-Não deve permitir a alteração do ID do exercício.
+O middleware de erro é responsável por capturar erros durante o processamento das requisições e enviar respostas
+apropriadas ao cliente.
+A implementação a seguir verifica se o erro é uma instância de `ServerError` e retorna o status code e a mensagem
+correspondente.
+Caso contrário, retorna um erro genérico com o status 500.
 
-### DELETE /exercises/:id
+```javascript
+const errorHandler = (err, req, res, next) => {
+    if (err instanceof ServerError) {
+        res.status(err.statusCode).send({
+            error: err.name,
+            message: err.message,
+        });
+        return;
+    }
+    console.error(err);
+    res.status(500).send({
+        error: "InternalServerError",
+        message: "Algo deu errado!"
+    });
+};
+```
 
-Permite apagar o exercício identificado pelo parâmetro "id";
-Deve retornar 404 caso o exercício não seja encontrado.
+### Para testar
+
+- Inicie sua aplicação e acesse a rota que gera um erro (/error). Você deve ver a resposta formatada com o nome e a
+  mensagem do erro.
+- Para outras rotas, o middleware de erro deve capturar erros não tratados e retornar uma mensagem genérica de erro 500.
