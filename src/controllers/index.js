@@ -1,5 +1,3 @@
-import * as exerciseControllers from './exercise-controller.js';
+import * as exerciseControllers from "./exercise-controller.js";
 
-export default [
-    exerciseControllers,
-]
+export default [exerciseControllers];
