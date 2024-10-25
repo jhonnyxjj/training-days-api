@@ -1,57 +1,35 @@
-# Exercício API - Training Days
+# Training Day API
 
-## Objetivo
+A **Training Day API** é uma API simples desenvolvida em Node.js que permite o gerenciamento de exercícios físicos. 
+Com funcionalidades básicas de CRUD (Criar, Ler, Atualizar e Deletar), a API facilita a organização e o acompanhamento de treinos.
 
-API do "Training Days", app utilizado para o registro de diferentes treinos de academia.
+## Tecnologias Utilizadas
+- **Node.js**: Um ambiente de execução JavaScript que possibilita a criação de aplicações de forma eficiente e escalável.
+- **Express**: Framework web que simplifica a criação de APIs, proporcionando uma estrutura robusta para roteamento e manipulação de requisições.
+- **Módulos Nativos**: Utilização de módulos do Node.js que permitem o gerenciamento de requisições HTTP.
 
-## Entidades
+## Funcionalidades
+A API oferece as seguintes operações:
+- **Listar Exercícios**: Recupera uma lista de exercícios existentes.
+- **Criar Exercício**: Adiciona um novo exercício à lista.
+- **Atualizar Exercício**: Modifica as informações de um exercício específico.
+- **Deletar Exercício**: Remove um exercício da lista.
 
-### Exercício (exercise)
+## Estrutura do Projeto
+O projeto é organizado em módulos que separam responsabilidades, incluindo controladores, serviços e middlewares.
 
-Um exercício é um conjunto de movimentos utilizados para fortalecer a musculatura, e possui a seguinte estrutura:
+### Estrutura de Arquivos
+- `index.js`: Configuração do servidor e inicialização da API.
+- `controllers/`: Contém os controladores que gerenciam as rotas e as requisições recebidas.
+- `services/`: Lógica de negócios para gerenciamento de exercícios.
+- `repository/`: Interage com a estrutura de dados.
+- `middlewares/`: Middlewares, criado para tratamento de erros.
+- `errors/`: Define tipos de erros personalizados para melhorar o tratamento de erros.
 
-```json
-{
-  "id": 0, // Identificador único do exercício, iniciando em 0 e nunca se repetindo
-  "name": "Nome do exercício",
-  "description": "Descrição do exercício"
-}
-```
+## Como Executar
+Para executar a API, siga estes passos:
+1. Clone o repositório.
+2. Instale as dependências com o comando `npm i`.
+3. Inicie o servidor. A API escutará na porta 3000 por padrão.
 
-## Rotas
-
-Desenvolver as seguintes rotas na aplicação:
-
-### GET /exercises
-
-Traz todos os exercícios cadastrados na plataforma.
-
-**Exemplo de resposta**
-
-```json
-{
-  "exercises": [
-    {
-      "id": 0,
-      "name": "Teste",
-      "description": "Exercício de testes"
-    }
-  ]
-}
-```
-
-### POST /exercises
-
-Cria um novo exercício, lembrando que o campo "name" é obrigatório, o campo "description" é opcional e o campo "id" deve ser criado automaticamente pelo servidor, sendo descartado caso recebido na request.
-Deve retornar 400 caso algum parâmetro esteja inválido.
-
-### PATCH /exercises/:id
-
-Permite alterar os campos de um determinado exercício identificado pelo parâmetro "id";
-Deve retornar 404 caso o exercício não seja encontrado.
-Não deve permitir a alteração do ID do exercício.
-
-### DELETE /exercises/:id
-
-Permite apagar o exercício identificado pelo parâmetro "id";
-Deve retornar 404 caso o exercício não seja encontrado.
+Training Day API
