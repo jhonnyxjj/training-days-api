@@ -32,4 +32,12 @@ Para executar a API, siga estes passos:
 2. Instale as dependências com o comando `npm i`.
 3. Inicie o servidor. A API escutará na porta 3000 por padrão.
 
-Training Day API
+### Criar um Exercício
+- **Método:** POST
+- **Endpoint:** `/exercises`
+- **Corpo da Requisição:**
+```json
+{
+  "name": "Supino Reto",
+  "description": "Exercício para fortalecer os músculos do peito, ombros e tríceps."
+}
