@@ -1,68 +1,43 @@
-# Training Days API
+# Training Day API
 
-## Feature: Middleware de Erro
+A **Training Day API** é uma API simples desenvolvida em Node.js que permite o gerenciamento de exercícios físicos. 
+Com funcionalidades básicas de CRUD (Criar, Ler, Atualizar e Deletar), a API facilita a organização e o acompanhamento de treinos.
 
-### Descrição
+## Tecnologias Utilizadas
+- **Node.js**: Um ambiente de execução JavaScript que possibilita a criação de aplicações de forma eficiente e escalável.
+- **Express**: Framework web que simplifica a criação de APIs, proporcionando uma estrutura robusta para roteamento e manipulação de requisições.
+- **Módulos Nativos**: Utilização de módulos do Node.js que permitem o gerenciamento de requisições HTTP.
 
-Esta feature adiciona um middleware de erro à API, permitindo um tratamento de erros mais consistente e amigável. O
-middleware captura erros gerados durante o processamento das requisições e retorna respostas formatadas ao cliente,
-garantindo que o usuário receba informações úteis sobre o que ocorreu.
+## Funcionalidades
+A API oferece as seguintes operações:
+- **Listar Exercícios**: Recupera uma lista de exercícios existentes.
+- **Criar Exercício**: Adiciona um novo exercício à lista.
+- **Atualizar Exercício**: Modifica as informações de um exercício específico.
+- **Deletar Exercício**: Remove um exercício da lista.
 
-### Estrutura de Erros
+## Estrutura do Projeto
+O projeto é organizado em módulos que separam responsabilidades, incluindo controladores, serviços e middlewares.
 
-1. **`errors`**:
-    - Contém classes de erro personalizadas que podem ser utilizadas em toda a aplicação, facilitando o gerenciamento de
-      diferentes tipos de erros.
+### Estrutura de Arquivos
+- `index.js`: Configuração do servidor e inicialização da API.
+- `controllers/`: Contém os controladores que gerenciam as rotas e as requisições recebidas.
+- `services/`: Lógica de negócios para gerenciamento de exercícios.
+- `repository/`: Interage com a estrutura de dados.
+- `middlewares/`: Middlewares, criado para tratamento de erros.
+- `errors/`: Define tipos de erros personalizados para melhorar o tratamento de erros.
 
-### Classes de Erro Personalizadas
+## Como Executar
+Para executar a API, siga estes passos:
+1. Clone o repositório.
+2. Instale as dependências com o comando `npm i`.
+3. Inicie o servidor. A API escutará na porta 3000 por padrão.
 
-#### `ServerError`
-
-A classe `ServerError` estende a classe `Error` nativa do JavaScript e é utilizada para representar erros do servidor de
-forma consistente.
-
-```javascript
-class ServerError extends Error {
-    constructor(name, statusCode, message) {
-        super(message);
-        this.name = name; // Nome do erro
-        this.statusCode = statusCode; // Código de status HTTP
-    }
+### Criar um Exercício
+- **Método:** POST
+- **Endpoint:** `/exercises`
+- **Corpo da Requisição:**
+```json
+{
+  "name": "Supino Reto",
+  "description": "Exercício para fortalecer os músculos do peito, ombros e tríceps."
 }
-```
-
-#### Outras Classes de Erros
-
-- `InvalidParameterError:` Utilizada quando um parâmetro de requisição não é válido.
-- `ConflictError:` Utilizada em situações de conflito, como tentativas de criação de um recurso que já existe.
-
-### Middleware de Erro: `error-middleware.js`
-
-O middleware de erro é responsável por capturar erros durante o processamento das requisições e enviar respostas
-apropriadas ao cliente.
-A implementação a seguir verifica se o erro é uma instância de `ServerError` e retorna o status code e a mensagem
-correspondente.
-Caso contrário, retorna um erro genérico com o status 500.
-
-```javascript
-const errorHandler = (err, req, res, next) => {
-    if (err instanceof ServerError) {
-        res.status(err.statusCode).send({
-            error: err.name,
-            message: err.message,
-        });
-        return;
-    }
-    console.error(err);
-    res.status(500).send({
-        error: "InternalServerError",
-        message: "Algo deu errado!"
-    });
-};
-```
-
-### Para testar
-
-- Inicie sua aplicação e acesse a rota da sua aplicação.Tente forçar errors na aplicação, você deve ver a resposta formatada com o nome e a
-  mensagem do erro.
-- Para outras rotas, o middleware de erro deve capturar erros não tratados e retornar uma mensagem genérica de erro 500.
