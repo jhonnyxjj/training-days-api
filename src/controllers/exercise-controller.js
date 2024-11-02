@@ -9,42 +9,44 @@ export const initialize = (app) => {
 }
 
 
-export const getExercises = (req, res) => {
+export const getExercises = (req, res, next) => {
     try {
         const exercises = exerciseService.listAllExercises();
         res.status(200).json(exercises);
     } catch (e) {
-        res.status(500).send({ error: e.message });
+        res.status(500).send({error: e.message});
     }
 }
 
-export const createExercises = (req, res) => {
+export const createExercises = (req, res, next) => {
     try {
         const exercise = req.body;
         const newExercise = exerciseService.registerExercise(exercise);
         res.status(201).json(newExercise);
     } catch (e) {
-        res.status(400).send({ error: e.message });
+        next(e);
+
+
     }
 }
 
-export const updateExercise = (req, res) => {
+export const updateExercise = (req, res, next) => {
     try {
         const exerciseId = req.params.id;
         const updateExercise = req.body;
         const exercise = exerciseService.updateExercise(exerciseId, updateExercise);
         res.status(200).json(exercise);
     } catch (e) {
-        res.status(404).send({ error: e.message });
+        next(e);
     }
 }
 
-export const deleteExercise = (req, res) => {
+export const deleteExercise = (req, res, next) => {
     try {
         const exerciseId = req.params.id;
         exerciseService.removeExercise(exerciseId);
-        res.status(200).send({ message: "Exercício removido com sucesso." });
+        res.status(200).send({message: "Exercício removido com sucesso."});
     } catch (e) {
-        res.status(404).send({ error: e.message });
+        next(e);
     }
 }
